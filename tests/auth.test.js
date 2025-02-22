@@ -1,5 +1,5 @@
 const request = require("supertest");
-const {app} = require("../server");
+const {app, server} = require("../server");
 const mongoose = require("mongoose");
 const User = require("../src/models/User");
 require("dotenv").config();
@@ -22,7 +22,7 @@ describe("Auth API", () => {
 
   afterAll(async () => {
     await mongoose.connection.close();
-    await new Promise((resolve) => setTimeout(resolve, 1000)); // Ensure Jest exits properly
+    server.close();
   });
   //resgister new user test
 

@@ -2,6 +2,7 @@ const request = require("supertest");
 const app = require("../server");
 const mongoose = require("mongoose");
 const User = require("../src/models/User");
+require("dotenv").config();
 
 //test cases use through the file output
 

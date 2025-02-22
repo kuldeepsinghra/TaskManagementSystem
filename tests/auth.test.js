@@ -5,6 +5,7 @@ const User = require("../src/models/User");
 require("dotenv").config();
 
 //test cases use through the file output
+console.log('mongo wrong uri', process.env.MONGO_URI)
 
 describe("Auth API", () => {
   // Clean up test database before running tests

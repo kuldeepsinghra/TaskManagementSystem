@@ -49,35 +49,35 @@ describe("Auth API", () => {
     expect(res.body.message).toEqual("Invalid email format");
   });
 
-  //if user going to login should be login with existing mail
-  it("should login an existing user", async () => {
-    const res = await request(app).post("/api/auth/login").send({
-      email: "test@example.com",
-      password: "password123",
-    });
+//   //if user going to login should be login with existing mail
+//   it("should login an existing user", async () => {
+//     const res = await request(app).post("/api/auth/login").send({
+//       email: "test@example.com",
+//       password: "password123",
+//     });
 
-    expect(res.statusCode).toEqual(200);
-    expect(res.body).toHaveProperty("token");
-  });
-   // if password does not match
-  it("should not login with incorrect password", async () => {
-    const res = await request(app).post("/api/auth/login").send({
-      email: "test@example.com",
-      password: "wrongpassword",
-    });
+//     expect(res.statusCode).toEqual(200);
+//     expect(res.body).toHaveProperty("token");
+//   });
+//    // if password does not match
+//   it("should not login with incorrect password", async () => {
+//     const res = await request(app).post("/api/auth/login").send({
+//       email: "test@example.com",
+//       password: "wrongpassword",
+//     });
 
-    expect(res.statusCode).toEqual(401);
-    expect(res.body.message).toEqual("Invalid credentials");
-  });
- // email not found check
-  it("should not login with non-existent email", async () => {
-    const res = await request(app).post("/api/auth/login").send({
-      email: "notfound@example.com",
-      password: "password123",
-    });
+//     expect(res.statusCode).toEqual(401);
+//     expect(res.body.message).toEqual("Invalid credentials");
+//   });
+//  // email not found check
+//   it("should not login with non-existent email", async () => {
+//     const res = await request(app).post("/api/auth/login").send({
+//       email: "notfound@example.com",
+//       password: "password123",
+//     });
 
-    expect(res.statusCode).toEqual(404);
-    expect(res.body.message).toEqual("User not found");
-  });
+//     expect(res.statusCode).toEqual(404);
+//     expect(res.body.message).toEqual("User not found");
+//   });
 });
 

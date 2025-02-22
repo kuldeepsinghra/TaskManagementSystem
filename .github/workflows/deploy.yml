@@ -3,7 +3,7 @@ name: Deploy to Render
 on:
   push:
     branches:
-      - main  # whenever code push to the mail branch then this will be executed
+      - main
 
 jobs:
   build:
@@ -13,11 +13,19 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
+      - name: Create .env File
+        run: |
+          echo "MONGO_URI=${{ secrets.MONGO_URI }}" > .env
+          echo "PORT=${{ secrets.PORT }}" >> .env
+          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
+          echo "EMAIL_USER=${{ secrets.EMAIL_USER }}" >> .env
+          echo "EMAIL_PASS=${{ secrets.EMAIL_PASS }}" >> .env
+
       - name: Install Dependencies
         run: npm install
 
       - name: Run Tests
-        run: npm test  #according to test implemenet
+        run: npm test
 
       - name: Deploy to Render
         run: curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK }}

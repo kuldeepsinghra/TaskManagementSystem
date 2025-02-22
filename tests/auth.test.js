@@ -22,6 +22,7 @@ describe("Auth API", () => {
 
   afterAll(async () => {
     await mongoose.connection.close();
+    await new Promise((resolve) => setTimeout(resolve, 1000)); // Ensure Jest exits properly
   });
   //resgister new user test
 

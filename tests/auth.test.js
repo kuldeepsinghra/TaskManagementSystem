@@ -8,6 +8,13 @@ const User = require("../src/models/User");
 describe("Auth API", () => {
   // Clean up test database before running tests
   beforeAll(async () => {
+    // Ensure database is connected before running tests
+    if (mongoose.connection.readyState === 0) {
+      await mongoose.connect(process.env.MONGO_URI, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+      });
+    }
     await User.deleteMany({});
   });
 

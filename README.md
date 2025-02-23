@@ -49,6 +49,8 @@ Step 10: API Usage
 Once the server is running, you can test the API endpoints using Postman or any API testing tool.
 
 Test Cases to Run Your Service via Postman(instead of http://localhost:<port>  you need to check also by replacing baseurl genereted by render)
+
+1.
 Register API (POST request):
 http://localhost:<port>/api/auth/register
 Data in the body:
@@ -58,6 +60,8 @@ Data in the body:
   "password": "password123",
   "role": "user"
 }
+
+2.
 Login API (POST request):
 http://localhost:<port>/api/auth/login
 Data in the body:
@@ -65,7 +69,9 @@ Data in the body:
   "email": "aakash@gmail.com",
   "password": "password123"
 }
-Get Task Data (POST request):
+
+3.
+create Task Data (POST request):
 http://localhost:<port>/api/tasks
 Data in the body:
 {
@@ -78,16 +84,19 @@ Data in the body:
 Pass the JWT token in the headers under Authorization:
 Authorization: Bearer <your_jwt_token>
 
+4.
 Get Task Data (GET request):
 http://localhost:<port>/api/tasks
 Pass the JWT token in the headers under Authorization:
 Authorization: Bearer <your_jwt_token>
 This will return the tasks specific to the authenticated user.
 
+5.
 Update Task Data (PUT request):
 http://localhost:<port>/api/tasks/:id
 Pass the data you want to update in the body.
 
+6.
 Delete Task (DELETE request):
 http://localhost:<port>/api/tasks/:id
 Only an admin can delete tasks.

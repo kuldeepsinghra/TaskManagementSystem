@@ -8,11 +8,13 @@ const logger = require("../utils/logger"); // Logging utility
 exports.createTask = async (req, res) => {
   try {
     const { title, description, dueDate, assignedTo } = req.body;
+    //validation for required parameters already done into the validateTask from middleware
+    //use create hook to create a data of task
     const task = await Task.create({
       title,
       description,
       dueDate,
-      createdBy: req.user.id,
+      createdBy: req.user.id,//coming from protect which is use into route to verify that this user is calling our api
       assignedTo: assignedTo || req.user.id,
     });
 
@@ -40,7 +42,7 @@ exports.createTask = async (req, res) => {
 exports.getTasks = async (req, res) => {
     try {
       const { page = 1, limit = 10 } = req.query;
-      //find the task which is created by this user means jtoken users task we can also give an id, going through middleware the token will be decoded
+      //find the task which is created by this user means jwttoken users task we can also give an id, going through middleware the token will be decoded
       const tasks = await Task.find({ createdBy: req.user.id })
         .limit(limit * 1)
         .skip((page - 1) * limit)//skip the previous page so that correct pages will come after
@@ -61,14 +63,14 @@ exports.updateTask = async (req, res) => {
       //find task by detail by id (task id)
       const task = await Task.findById(req.params.id);
       if (!task) return res.status(404).json({ message: "Task not found" });
-      //only admin can update the task validation for that 
+      //only admin can update the task easily if not an admin then it should be created by same user for update the task
       if (req.user.role !== "admin" && task.createdBy.toString() !== req.user.id) {
         return res.status(403).json({ message: "Unauthorized" });
       }
      // replace the value of task or overwrite with new one
       Object.assign(task, req.body);
       await task.save(); // save the new update task
-      //log create 
+      //log create in logs or activity logs file
       logger.info(`Task Updated: ${task.title} by ${req.user.id}`);
         res.json({
         message:"your task updated successfully",
@@ -84,13 +86,13 @@ exports.updateTask = async (req, res) => {
 // Delete Task + Log Action
 exports.deleteTask = async (req, res) => {
     try {
+      //find the task by id into tasks collection of mongodb via task id 
       const task = await Task.findById(req.params.id);
+      //return failure msg as task not found error
       if (!task) return res.status(404).json({ message: "Task not found" });
-  
-      if (req.user.role !== "admin" && task.createdBy.toString() !== req.user.id) {
-        return res.status(403).json({ message: "Unauthorized" });
-      }
-  
+      // if (req.user.role !== "admin" && task.createdBy.toString() !== req.user.id) {
+      //   return res.status(403).json({ message: "Unauthorized" });
+      // }
       await task.deleteOne();
       logger.info(`Task Deleted: ${task.title} by ${req.user.id}`);
   

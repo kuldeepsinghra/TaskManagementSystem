@@ -5,6 +5,7 @@ const { validateTask } = require("../middlewares/validate");
 
 const router = express.Router();
 
+//create the task first verify the jwt by protect and req.user will give us signature data after decode
 router.post("/", protect, validateTask, createTask);
 router.get("/", protect, getTasks);
 router.put("/:id", protect, validateTask, updateTask);

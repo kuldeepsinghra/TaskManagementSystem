@@ -1,6 +1,7 @@
 const nodemailer = require("nodemailer");
 require("dotenv").config();
-
+//create transport to authetication for gmail user and service
+//go your using mail and create app password for better security 
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
@@ -8,7 +9,7 @@ const transporter = nodemailer.createTransport({
     pass: process.env.EMAIL_PASS,
   },
 });
-
+//send notification via this mail to other mail user
 exports.sendTaskNotification = async (to, task) => {
   const mailOptions = {
     from: process.env.EMAIL_USER,
@@ -18,6 +19,7 @@ exports.sendTaskNotification = async (to, task) => {
   };
 
   try {
+    //send mail of notification
     await transporter.sendMail(mailOptions);
     console.log("Notification email sent to:", to);
   } catch (error) {

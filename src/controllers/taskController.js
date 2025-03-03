@@ -61,12 +61,14 @@ exports.getTasks = async (req, res) => {
 exports.updateTask = async (req, res) => {
     try {
       //find task by detail by id (task id)
+      console.log('req parms', req.params.id);
       const task = await Task.findById(req.params.id);
       if (!task) return res.status(404).json({ message: "Task not found" });
       //only admin can update the task easily if not an admin then it should be created by same user for update the task
       if (req.user.role !== "admin" && task.createdBy.toString() !== req.user.id) {
         return res.status(403).json({ message: "Unauthorized" });
       }
+      console.log('before updated task or database task', task);
      // replace the value of task or overwrite with new one
       Object.assign(task, req.body);
       await task.save(); // save the new update task
@@ -75,7 +77,7 @@ exports.updateTask = async (req, res) => {
         res.json({
         message:"your task updated successfully",
         status: "success",
-        tasks: tasks //new updated task as a response
+        tasks: task //new updated task as a response
       });  
     } catch (error) {
       logger.error(`Task Update Failed: ${error.message}`);
@@ -93,6 +95,7 @@ exports.deleteTask = async (req, res) => {
       // if (req.user.role !== "admin" && task.createdBy.toString() !== req.user.id) {
       //   return res.status(403).json({ message: "Unauthorized" });
       // }
+      console.log('task before delete', task);
       await task.deleteOne();
       logger.info(`Task Deleted: ${task.title} by ${req.user.id}`);
   

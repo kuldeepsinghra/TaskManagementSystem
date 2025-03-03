@@ -23,6 +23,7 @@ exports.protect = (req, res, next) => {
 
 exports.adminOnly = (req, res, next) => {
   //if someone want to call admin api and his role is not admin then give response in middleware as access denied
+  console.log('res.user from jwt verify token', req.user);
   if (req.user.role !== "admin") {
     return res.status(403).json({ message: "Access denied" });
   }
